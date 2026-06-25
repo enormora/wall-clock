@@ -21,12 +21,18 @@ npm install @enormora/wall-clock
 
 The package is ESM-only and requires Node.js `^24.15.0 || ^26.0.0`.
 
+The root export keeps both clocks available from one import. Prefer the explicit module subpaths when code only needs one
+clock:
+
+- `@enormora/wall-clock/wall-clock`
+- `@enormora/wall-clock/deterministic-wall-clock`
+
 ## Real wall clock
 
 Use `createWallClock()` at the application boundary and pass the resulting `WallClock` into code that needs time.
 
 ```ts
-import { createWallClock } from '@enormora/wall-clock';
+import { createWallClock } from '@enormora/wall-clock/wall-clock';
 
 const wallClock = createWallClock();
 
@@ -48,7 +54,7 @@ The timer functions are bound to `globalThis`, so they can be passed around safe
 Prefer accepting a `WallClock` as an explicit dependency for code that depends on time.
 
 ```ts
-import type { WallClock } from '@enormora/wall-clock';
+import type { WallClock } from '@enormora/wall-clock/wall-clock';
 
 type Session = {
     readonly expiresAtTimestampInMilliseconds: number;
@@ -66,7 +72,7 @@ This keeps the core behavior deterministic and easy to test.
 Use `createDeterministicWallClock()` in tests or deterministic environments.
 
 ```ts
-import { createDeterministicWallClock } from '@enormora/wall-clock';
+import { createDeterministicWallClock } from '@enormora/wall-clock/deterministic-wall-clock';
 
 const wallClock = createDeterministicWallClock({
     initialCurrentTimestampInMilliseconds: 1_704_067_200_000
@@ -90,7 +96,7 @@ The deterministic clock runs scheduled callbacks when time is advanced far enoug
 
 ```ts
 import { deepEqual } from 'node:assert/strict';
-import { createDeterministicWallClock } from '@enormora/wall-clock';
+import { createDeterministicWallClock } from '@enormora/wall-clock/deterministic-wall-clock';
 
 const wallClock = createDeterministicWallClock();
 const calls: string[] = [];
@@ -114,7 +120,7 @@ Intervals run once for each elapsed interval.
 
 ```ts
 import { equal } from 'node:assert/strict';
-import { createDeterministicWallClock } from '@enormora/wall-clock';
+import { createDeterministicWallClock } from '@enormora/wall-clock/deterministic-wall-clock';
 
 const wallClock = createDeterministicWallClock();
 let count = 0;

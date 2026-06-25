@@ -62,6 +62,12 @@ export default [
         }
     },
     {
+        files: ['source/index.ts'],
+        rules: {
+            'no-barrel-files/no-barrel-files': 'off'
+        }
+    },
+    {
         rules: {
             '@typescript-eslint/method-signature-style': 'off',
             '@typescript-eslint/no-unsafe-type-assertion': 'off',

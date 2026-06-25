@@ -3,12 +3,20 @@
     "version": "1.0.0",
     "type": "module",
     "description": "Explicit wall-clock time access for TypeScript applications",
-    "main": "target/build/source/wall-clock.js",
-    "types": "target/build/source/wall-clock.d.ts",
+    "main": "target/build/source/index.js",
+    "types": "target/build/source/index.d.ts",
     "exports": {
         ".": {
+            "types": "./target/build/source/index.d.ts",
+            "import": "./target/build/source/index.js"
+        },
+        "./wall-clock": {
             "types": "./target/build/source/wall-clock.d.ts",
             "import": "./target/build/source/wall-clock.js"
+        },
+        "./deterministic-wall-clock": {
+            "types": "./target/build/source/deterministic-wall-clock.d.ts",
+            "import": "./target/build/source/deterministic-wall-clock.js"
         }
     },
     "files": [
