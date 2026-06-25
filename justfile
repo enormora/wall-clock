@@ -27,3 +27,6 @@ test-unit:
 
 test:
     c8 just test-unit
+
+packtory-dry-run: compile
+    packtory publish
