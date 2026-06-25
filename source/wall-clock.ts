@@ -78,7 +78,7 @@ export const createWallClock = (): WallClock => {
         },
 
         get currentDate() {
-            return new Date(Date.now());
+            return new Date();
         },
 
         setTimeout: globalThis.setTimeout.bind(globalThis),

@@ -40,11 +40,6 @@ export default [
     {
         ...mochaConfig,
         files: ['**/*.test.ts'],
-        languageOptions: {
-            globals: {
-                test: 'readonly'
-            }
-        },
         rules: {
             ...mochaConfig.rules,
             'sonarjs/no-empty-group': 'off',
@@ -80,6 +75,12 @@ export default [
         files: ['eslint.config.js', 'mocha.config.json', 'prettier.config.js'],
         rules: {
             'import/no-default-export': 'off'
+        }
+    },
+    {
+        files: ['**/*.test.ts'],
+        rules: {
+            'max-lines-per-function': 'off'
         }
     }
 ];
