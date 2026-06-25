@@ -50,7 +50,20 @@ export default [
             'sonarjs/no-empty-group': 'off',
             complexity: 'off',
             'mocha/no-global-tests': 'off',
-            'mocha/no-mocha-arrows': 'off'
+            'mocha/no-mocha-arrows': 'off',
+            '@typescript-eslint/explicit-function-return-type': 'off',
+            '@typescript-eslint/no-magic-numbers': 'off',
+            'functional/no-this-expressions': 'off',
+            'functional/prefer-immutable-types': 'off',
+            'max-statements': 'off',
+            'no-magic-numbers': 'off',
+            'node/prefer-global/timers': 'off'
+        }
+    },
+    {
+        files: ['source/wall-clock.ts'],
+        rules: {
+            'node/prefer-global/timers': 'off'
         }
     },
     {
