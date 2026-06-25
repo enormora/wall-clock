@@ -49,29 +49,29 @@ type IntervalController = {
 
 type CurrentTimestampReader = () => number;
 
-const validateFiniteDelayInMilliseconds = (delayInMilliseconds: number): void => {
+function validateFiniteDelayInMilliseconds(delayInMilliseconds: number): void {
     if (!Number.isFinite(delayInMilliseconds)) {
         throw new TypeError('Invalid delay, must be a finite number');
     }
-};
+}
 
-const validateTimeoutDelayInMilliseconds = (delayInMilliseconds: number): void => {
+function validateTimeoutDelayInMilliseconds(delayInMilliseconds: number): void {
     validateFiniteDelayInMilliseconds(delayInMilliseconds);
 
     if (delayInMilliseconds < 0) {
         throw new RangeError(`Invalid timeout delay ${delayInMilliseconds}, must be greater than or equal to 0`);
     }
-};
+}
 
-const validateIntervalDelayInMilliseconds = (delayInMilliseconds: number): void => {
+function validateIntervalDelayInMilliseconds(delayInMilliseconds: number): void {
     validateFiniteDelayInMilliseconds(delayInMilliseconds);
 
     if (delayInMilliseconds <= 0) {
         throw new RangeError(`Invalid interval delay ${delayInMilliseconds}, must be greater than 0`);
     }
-};
+}
 
-export const createWallClock = (): WallClock => {
+export function createWallClock(): WallClock {
     return {
         get currentTimestampInMilliseconds() {
             return Date.now();
@@ -89,13 +89,13 @@ export const createWallClock = (): WallClock => {
 
         clearInterval: globalThis.clearInterval.bind(globalThis)
     };
-};
+}
 
-const createTimeoutController = (currentTimestampInMilliseconds: CurrentTimestampReader): TimeoutController => {
+function createTimeoutController(currentTimestampInMilliseconds: CurrentTimestampReader): TimeoutController {
     let nextTimeoutIdentifier = 0;
     const timeoutRegistrations = new Map<number, TimeoutRegistration>();
 
-    const runDueTimeoutRegistrations = (): void => {
+    function runDueTimeoutRegistrations(): void {
         const dueTimeoutEntries = Array.from(timeoutRegistrations.entries())
             .filter(([, timeoutRegistration]) => {
                 return timeoutRegistration.executionTimestampInMilliseconds <= currentTimestampInMilliseconds();
@@ -121,7 +121,7 @@ const createTimeoutController = (currentTimestampInMilliseconds: CurrentTimestam
             timeoutRegistrations.delete(timeoutIdentifier);
             timeoutRegistration.execute();
         });
-    };
+    }
 
     return {
         runDueTimeoutRegistrations,
@@ -146,13 +146,13 @@ const createTimeoutController = (currentTimestampInMilliseconds: CurrentTimestam
             timeoutRegistrations.delete(timeoutIdentifier as unknown as number);
         }
     };
-};
+}
 
-const createIntervalController = (currentTimestampInMilliseconds: CurrentTimestampReader): IntervalController => {
+function createIntervalController(currentTimestampInMilliseconds: CurrentTimestampReader): IntervalController {
     let nextIntervalIdentifier = 0;
     const intervalRegistrations = new Map<number, IntervalRegistration>();
 
-    const runDueIntervalRegistrations = (): void => {
+    function runDueIntervalRegistrations(): void {
         intervalRegistrations.forEach((intervalRegistration, intervalIdentifier) => {
             const { delayInMilliseconds, execute } = intervalRegistration;
             let { nextExecutionTimestampInMilliseconds } = intervalRegistration;
@@ -172,7 +172,7 @@ const createIntervalController = (currentTimestampInMilliseconds: CurrentTimesta
                 });
             }
         });
-    };
+    }
 
     return {
         runDueIntervalRegistrations,
@@ -198,15 +198,15 @@ const createIntervalController = (currentTimestampInMilliseconds: CurrentTimesta
             intervalRegistrations.delete(intervalIdentifier as unknown as number);
         }
     };
-};
+}
 
-export const createDeterministicWallClock = (options: DeterministicWallClockOptions = {}): DeterministicWallClock => {
+export function createDeterministicWallClock(options: DeterministicWallClockOptions = {}): DeterministicWallClock {
     const { initialCurrentTimestampInMilliseconds = 0 } = options;
 
     let currentTimestampInMilliseconds = initialCurrentTimestampInMilliseconds;
-    const currentTimestampReader = (): number => {
+    function currentTimestampReader(): number {
         return currentTimestampInMilliseconds;
-    };
+    }
     const timeoutController = createTimeoutController(currentTimestampReader);
     const intervalController = createIntervalController(currentTimestampReader);
 
@@ -239,4 +239,4 @@ export const createDeterministicWallClock = (options: DeterministicWallClockOpti
 
         clearInterval: intervalController.clearInterval
     };
-};
+}

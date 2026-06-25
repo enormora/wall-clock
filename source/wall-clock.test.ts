@@ -4,7 +4,7 @@ import { suite, test } from 'mocha';
 
 import { createDeterministicWallClock, createWallClock } from './wall-clock.ts';
 
-const createCallRecorder = () => {
+function createCallRecorder() {
     const calls: unknown[][] = [];
 
     return {
@@ -13,7 +13,7 @@ const createCallRecorder = () => {
             calls.push(handlerArguments);
         }
     };
-};
+}
 
 suite('wall clock', () => {
     test('real wall clock returns the current timestamp in milliseconds', () => {
