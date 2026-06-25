@@ -21,8 +21,19 @@ export async function buildConfig() {
             },
             additionalPackageJsonAttributes: {
                 author: packageJson.author,
-                license: packageJson.license
-            }
+                license: packageJson.license,
+                repository: packageJson.repository
+            },
+            additionalFiles: [
+                {
+                    sourceFilePath: path.join(projectFolder, 'LICENSE'),
+                    targetFilePath: 'LICENSE'
+                },
+                {
+                    sourceFilePath: path.join(projectFolder, 'README.md'),
+                    targetFilePath: 'README.md'
+                }
+            ]
         },
         packages: [
             {

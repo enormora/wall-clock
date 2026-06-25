@@ -18,15 +18,29 @@
         "!target/build/source/**/*.map"
     ],
     "scripts": {},
-    "keywords": [],
+    "keywords": [
+        "clock",
+        "deterministic",
+        "isomorphic",
+        "test",
+        "time",
+        "timer",
+        "typescript",
+        "wall-clock"
+    ],
     "author": "Christian Rackerseder <git@echooff.de>",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/enormora/wall-clock.git"
+    },
     "devDependencies": {
         "@enormora/eslint-config-base": "0.0.31",
         "@enormora/eslint-config-mocha": "0.0.26",
         "@enormora/eslint-config-node": "0.0.26",
         "@enormora/eslint-config-typescript": "0.0.36",
         "@packtory/cli": "0.0.43",
+        "@packtory/github-release-gate": "0.0.5",
         "@types/mocha": "10.0.10",
         "@types/node": "24.12.4",
         "c8": "11.0.0",
