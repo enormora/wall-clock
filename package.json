@@ -1,13 +1,41 @@
 {
-  "name": "@enormora/wall-clock",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+    "name": "@enormora/wall-clock",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Explicit wall-clock time access for TypeScript applications",
+    "main": "target/build/source/wall-clock.js",
+    "types": "target/build/source/wall-clock.d.ts",
+    "exports": {
+        ".": {
+            "types": "./target/build/source/wall-clock.d.ts",
+            "import": "./target/build/source/wall-clock.js"
+        }
+    },
+    "files": [
+        "target/build/source/",
+        "!target/build/source/**/*.test.js",
+        "!target/build/source/**/*.d.ts.map",
+        "!target/build/source/**/*.map"
+    ],
+    "scripts": {},
+    "keywords": [],
+    "author": "Christian Rackerseder <git@echooff.de>",
+    "license": "MIT",
+    "devDependencies": {
+        "@enormora/eslint-config-base": "0.0.31",
+        "@enormora/eslint-config-mocha": "0.0.26",
+        "@enormora/eslint-config-node": "0.0.26",
+        "@enormora/eslint-config-typescript": "0.0.36",
+        "@types/mocha": "10.0.10",
+        "@types/node": "24.12.4",
+        "c8": "11.0.0",
+        "eslint": "10.4.0",
+        "mocha": "11.7.5",
+        "prettier": "3.8.3",
+        "rust-just": "1.51.0",
+        "typescript": "6.0.3"
+    },
+    "engines": {
+        "node": "^24.0.0 || ^26.0.0"
+    }
 }
