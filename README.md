@@ -95,7 +95,7 @@ The deterministic clock implements the same `WallClock` interface and adds:
 The deterministic clock runs scheduled callbacks when time is advanced far enough.
 
 ```ts
-import { deepEqual } from 'node:assert/strict';
+import { deepEqual } from 'node:assert';
 import { createDeterministicWallClock } from '@enormora/wall-clock/deterministic-wall-clock';
 
 const wallClock = createDeterministicWallClock();
@@ -119,7 +119,7 @@ deepEqual(calls, ['done']);
 Intervals run once for each elapsed interval.
 
 ```ts
-import { equal } from 'node:assert/strict';
+import { equal } from 'node:assert';
 import { createDeterministicWallClock } from '@enormora/wall-clock/deterministic-wall-clock';
 
 const wallClock = createDeterministicWallClock();
