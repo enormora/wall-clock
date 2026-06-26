@@ -14,9 +14,9 @@ jobs:
         runs-on: ubuntu-24.04
         name: Prepare release PR
         permissions:
-            contents: write
-            pull-requests: write
-            issues: write
+            contents: write # Required to push the generated changelog commit to the release branch.
+            pull-requests: write # Required to create, update, and close release pull requests.
+            issues: write # Required to apply the build label to the release pull request.
         env:
             GH_TOKEN: ${{ github.token }}
             GITHUB_TOKEN: ${{ github.token }}

@@ -21,7 +21,7 @@ jobs:
         name: Resolve publish target
         permissions:
             contents: read
-            pull-requests: read
+            pull-requests: read # Required to inspect pull requests associated with the pushed commit.
         outputs:
             should_publish: ${{ steps.resolve-publish-target.outputs.should_publish }}
             publish_commit_sha: ${{ steps.resolve-publish-target.outputs.publish_commit_sha }}
@@ -124,8 +124,8 @@ jobs:
         runs-on: ubuntu-24.04
         name: Publish release
         permissions:
-            contents: write
-            id-token: write
+            contents: write # Required to push the package tag and create the GitHub Release.
+            id-token: write # Required by npm trusted publishing to mint the OIDC token.
         env:
             GH_TOKEN: ${{ github.token }}
             GITHUB_TOKEN: ${{ github.token }}
