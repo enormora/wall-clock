@@ -12,7 +12,7 @@ concurrency:
 jobs:
     prepare-release:
         runs-on: ubuntu-24.04
-        name: Prepare release PR
+        name: Prepare release pull request
         permissions:
             contents: write # Required to push the generated changelog commit to the release branch.
             pull-requests: write # Required to create, update, and close release pull requests.
@@ -63,7 +63,7 @@ jobs:
                   fi
 
                   echo "created-release-commit=true" >> "${GITHUB_OUTPUT}"
-            - name: Close stale release PR and delete release branch
+            - name: Close stale release pull request and delete release branch
               if: steps.prepare-release.outputs.created-release-commit == 'false'
               run: |
                   release_pr_number=$(
@@ -83,7 +83,7 @@ jobs:
             - name: Push release branch
               if: steps.prepare-release.outputs.created-release-commit == 'true'
               run: git push origin "HEAD:refs/heads/${RELEASE_BRANCH}" --force-with-lease
-            - name: Create or update release PR
+            - name: Create or update release pull request
               if: steps.prepare-release.outputs.created-release-commit == 'true'
               run: |
                   release_pr_number=$(

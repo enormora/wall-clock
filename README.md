@@ -241,13 +241,13 @@ Pull requests that should appear in the changelog need exactly one changelog lab
 - `refactor`
 - `build`
 
-The package is released through a release PR:
+The package is released through a release pull request:
 
 1. Go to GitHub Actions -> Release -> Run workflow.
 2. The workflow creates or updates a `Prepare release` pull request with the generated `CHANGELOG.md` changes.
-3. Review and merge the release PR through the normal merge queue.
-4. After the release PR is merged, the publish workflow publishes to npm, pushes the package tag, and creates the GitHub
-   Release.
+3. Review and merge the release pull request through the normal merge queue.
+4. After the release pull request is merged, the publish workflow publishes to npm, pushes the package tag, and creates
+   the GitHub Release.
 
 The dry-run command validates the package shape without publishing.
 

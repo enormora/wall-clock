@@ -65,13 +65,13 @@ jobs:
                     )
 
                     if [ "${is_release_pull_request}" != 'true' ]; then
-                      echo 'The requested pull request is not a merged release PR.'
+                      echo 'The requested pull request is not a merged release pull request.'
                       exit 1
                     fi
 
                     publish_commit_sha=$(jq -r '.merge_commit_sha // empty' <<< "${release_pull_request}")
                     if [ -z "${publish_commit_sha}" ]; then
-                      echo 'The requested release PR does not have a merge commit SHA.'
+                      echo 'The requested release pull request does not have a merge commit SHA.'
                       exit 1
                     fi
 
@@ -109,7 +109,7 @@ jobs:
                   fi
 
                   if [ "${matching_release_pull_request_count}" != '1' ]; then
-                    echo 'More than one associated release PR matched the pushed commit.'
+                    echo 'More than one associated release pull request matched the pushed commit.'
                     exit 1
                   fi
 
