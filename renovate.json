@@ -15,6 +15,11 @@
             "matchPackagePatterns": ["^@enormora/eslint-config"],
             "groupName": "@enormora/eslint-config",
             "groupSlug": "enormora-eslint-config"
+        },
+        {
+            "matchPackagePatterns": ["^@packtory/"],
+            "groupName": "@packtory dependencies",
+            "groupSlug": "packtory"
         }
     ]
 }
