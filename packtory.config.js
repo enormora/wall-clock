@@ -78,6 +78,9 @@ export async function buildConfig() {
 
     return {
         ...(registrySettings === undefined ? {} : { registrySettings }),
+        changelog: {
+            outputs: [{ kind: 'repository-file', path: 'CHANGELOG.md' }, { kind: 'github-release' }]
+        },
         commonPackageSettings: {
             sourcesFolder,
             mainPackageJson: packageJson,

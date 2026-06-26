@@ -236,7 +236,46 @@ The package is prepared with Packtory. The dry-run command validates the package
 just packtory-dry-run
 ```
 
-Actual publishing should use the repository release workflow once configured.
+Inspect the next release plan:
+
+```sh
+just release-plan
+```
+
+Show what would change compared to the latest published package:
+
+```sh
+just release-diff
+```
+
+Generate or update the configured changelog output:
+
+```sh
+just changelog
+```
+
+Prepare a changelog commit:
+
+```sh
+just prepare-release
+```
+
+Publish, tag, push tags, and create GitHub Releases:
+
+```sh
+just publish-release
+```
+
+Pull requests that should appear in the changelog need exactly one changelog label. Use the default labels:
+
+- `breaking`
+- `bug`
+- `feature`
+- `enhancement`
+- `documentation`
+- `upgrade`
+- `refactor`
+- `build`
 
 ## License
 

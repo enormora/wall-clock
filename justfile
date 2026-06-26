@@ -30,3 +30,18 @@ test:
 
 packtory-dry-run: compile
     packtory publish
+
+release-plan: compile
+    packtory release
+
+release-diff: compile
+    packtory release-diff
+
+changelog: compile
+    packtory changelog
+
+prepare-release: compile
+    packtory release --write-changelog --commit --no-dry-run
+
+publish-release: compile
+    packtory release --publish --tag --push --github-release --no-dry-run
