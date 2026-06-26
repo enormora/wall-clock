@@ -1,4 +1,4 @@
-import { doesNotThrow, throws } from 'node:assert/strict';
+import assert from 'node:assert';
 import { suite, test } from 'mocha';
 
 import {
@@ -9,70 +9,70 @@ import {
 
 suite('timer delay validation', () => {
     test('accepts finite delays', () => {
-        doesNotThrow(() => {
+        assert.doesNotThrow(() => {
             validateFiniteDelayInMilliseconds(0);
         });
-        doesNotThrow(() => {
+        assert.doesNotThrow(() => {
             validateFiniteDelayInMilliseconds(100);
         });
-        doesNotThrow(() => {
+        assert.doesNotThrow(() => {
             validateFiniteDelayInMilliseconds(-100);
         });
     });
 
     test('rejects non-finite delays', () => {
-        throws(() => {
+        assert.throws(() => {
             validateFiniteDelayInMilliseconds(Number.NaN);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
-        throws(() => {
+        assert.throws(() => {
             validateFiniteDelayInMilliseconds(Number.POSITIVE_INFINITY);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
-        throws(() => {
+        assert.throws(() => {
             validateFiniteDelayInMilliseconds(Number.NEGATIVE_INFINITY);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
     });
 
     test('accepts zero and positive timeout delays', () => {
-        doesNotThrow(() => {
+        assert.doesNotThrow(() => {
             validateTimeoutDelayInMilliseconds(0);
         });
-        doesNotThrow(() => {
+        assert.doesNotThrow(() => {
             validateTimeoutDelayInMilliseconds(100);
         });
     });
 
     test('rejects negative timeout delays', () => {
-        throws(() => {
+        assert.throws(() => {
             validateTimeoutDelayInMilliseconds(-1);
         }, /^RangeError: Invalid timeout delay -1, must be greater than or equal to 0$/u);
     });
 
     test('rejects non-finite timeout delays', () => {
-        throws(() => {
+        assert.throws(() => {
             validateTimeoutDelayInMilliseconds(Number.NaN);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
     });
 
     test('accepts positive interval delays', () => {
-        doesNotThrow(() => {
+        assert.doesNotThrow(() => {
             validateIntervalDelayInMilliseconds(1);
         });
-        doesNotThrow(() => {
+        assert.doesNotThrow(() => {
             validateIntervalDelayInMilliseconds(100);
         });
     });
 
     test('rejects zero and negative interval delays', () => {
-        throws(() => {
+        assert.throws(() => {
             validateIntervalDelayInMilliseconds(0);
         }, /^RangeError: Invalid interval delay 0, must be greater than 0$/u);
-        throws(() => {
+        assert.throws(() => {
             validateIntervalDelayInMilliseconds(-1);
         }, /^RangeError: Invalid interval delay -1, must be greater than 0$/u);
     });
 
     test('rejects non-finite interval delays', () => {
-        throws(() => {
+        assert.throws(() => {
             validateIntervalDelayInMilliseconds(Number.POSITIVE_INFINITY);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
     });

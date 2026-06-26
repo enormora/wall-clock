@@ -1,4 +1,4 @@
-import { deepEqual, equal, notEqual } from 'node:assert/strict';
+import assert from 'node:assert';
 import timers from 'node:timers/promises';
 import { suite, test } from 'mocha';
 
@@ -12,9 +12,9 @@ suite('wall clock', () => {
         const actualCurrentTimestampInMilliseconds = wallClock.currentTimestampInMilliseconds;
 
         const upperTimestampBound = Date.now();
-        equal(typeof actualCurrentTimestampInMilliseconds, 'number');
-        equal(actualCurrentTimestampInMilliseconds >= lowerTimestampBound, true);
-        equal(actualCurrentTimestampInMilliseconds <= upperTimestampBound, true);
+        assert.strictEqual(typeof actualCurrentTimestampInMilliseconds, 'number');
+        assert.strictEqual(actualCurrentTimestampInMilliseconds >= lowerTimestampBound, true);
+        assert.strictEqual(actualCurrentTimestampInMilliseconds <= upperTimestampBound, true);
     });
 
     test('real wall clock returns a new current date instance', async () => {
@@ -24,8 +24,8 @@ suite('wall clock', () => {
         await timers.setTimeout(1);
         const secondCurrentDate = wallClock.currentDate;
 
-        notEqual(firstCurrentDate, secondCurrentDate);
-        equal(secondCurrentDate.getTime() >= firstCurrentDate.getTime(), true);
+        assert.notStrictEqual(firstCurrentDate, secondCurrentDate);
+        assert.strictEqual(secondCurrentDate.getTime() >= firstCurrentDate.getTime(), true);
     });
 
     test('real wall clock binds setTimeout to globalThis', () => {
@@ -47,8 +47,8 @@ suite('wall clock', () => {
                 return undefined;
             }, 1);
 
-            equal(actualTimeoutIdentifier, timeoutIdentifier);
-            equal(invocationContexts[0], globalThis);
+            assert.strictEqual(actualTimeoutIdentifier, timeoutIdentifier);
+            assert.strictEqual(invocationContexts[0], globalThis);
         } finally {
             globalThis.setTimeout = originalSetTimeout;
         }
@@ -72,8 +72,8 @@ suite('wall clock', () => {
 
             wallClock.clearTimeout(timeoutIdentifier);
 
-            equal(invocationContexts[0], globalThis);
-            deepEqual(actualTimeoutIdentifiers, [timeoutIdentifier]);
+            assert.strictEqual(invocationContexts[0], globalThis);
+            assert.deepStrictEqual(actualTimeoutIdentifiers, [timeoutIdentifier]);
         } finally {
             globalThis.clearTimeout = originalClearTimeout;
         }
@@ -98,8 +98,8 @@ suite('wall clock', () => {
                 return undefined;
             }, 1);
 
-            equal(actualIntervalIdentifier, intervalIdentifier);
-            equal(invocationContexts[0], globalThis);
+            assert.strictEqual(actualIntervalIdentifier, intervalIdentifier);
+            assert.strictEqual(invocationContexts[0], globalThis);
         } finally {
             globalThis.setInterval = originalSetInterval;
         }
@@ -126,8 +126,8 @@ suite('wall clock', () => {
 
             wallClock.clearInterval(intervalIdentifier);
 
-            equal(invocationContexts[0], globalThis);
-            deepEqual(actualIntervalIdentifiers, [intervalIdentifier]);
+            assert.strictEqual(invocationContexts[0], globalThis);
+            assert.deepStrictEqual(actualIntervalIdentifiers, [intervalIdentifier]);
         } finally {
             globalThis.clearInterval = originalClearInterval;
         }
