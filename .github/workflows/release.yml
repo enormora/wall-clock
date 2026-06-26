@@ -57,6 +57,7 @@ jobs:
               id: publish-release
               continue-on-error: true
               run: |
+                  set -o pipefail
                   mkdir -p target/release
                   npx just publish-release 2>&1 | tee target/release/publish.log
             # The `sigstore` wrapper used by `libnpmpublish` hardcodes
@@ -69,6 +70,12 @@ jobs:
             - name: Re-publish release after a transient sigstore failure
               if: steps.publish-release.outcome == 'failure'
               run: |
+                  if grep -Eiq 'OIDC token exchange failed with status 404' target/release/publish.log; then
+                    echo 'npm Trusted Publishing is not configured correctly for this workflow.'
+                    echo 'Expected npm Trusted Publishing workflow filename: release.yml'
+                    exit 1
+                  fi
+
                   if grep -Eiq 'attestation|oidc|provenance|rekor|sigstore|tlog' target/release/publish.log; then
                     sleep 30
                     npx just publish-release
