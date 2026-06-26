@@ -4,9 +4,7 @@ name: Release
 on:
     workflow_dispatch:
 
-permissions:
-    contents: write
-    id-token: write
+permissions: {}
 
 concurrency:
     group: release-main
@@ -15,6 +13,9 @@ jobs:
     release:
         runs-on: ubuntu-24.04
         name: Release package
+        permissions:
+            contents: write # required to commit the changelog, push the package tag, and create the GitHub Release
+            id-token: write # required by npm trusted publishing to mint the OIDC token
         env:
             GH_TOKEN: ${{ github.token }}
             GITHUB_TOKEN: ${{ github.token }}
@@ -55,7 +56,9 @@ jobs:
             - name: Publish release
               id: publish-release
               continue-on-error: true
-              run: npx just publish-release
+              run: |
+                  mkdir -p target/release
+                  npx just publish-release 2>&1 | tee target/release/publish.log
             # The `sigstore` wrapper used by `libnpmpublish` hardcodes
             # `fetchOnConflict: false`, so a retried Rekor POST after a
             # transient blip surfaces as
@@ -66,5 +69,10 @@ jobs:
             - name: Re-publish release after a transient sigstore failure
               if: steps.publish-release.outcome == 'failure'
               run: |
-                  sleep 10
-                  npx just publish-release
+                  if grep -Eiq 'attestation|oidc|provenance|rekor|sigstore|tlog' target/release/publish.log; then
+                    sleep 30
+                    npx just publish-release
+                    exit 0
+                  fi
+
+                  exit 1
