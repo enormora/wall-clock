@@ -7,18 +7,22 @@ on:
 permissions: {}
 
 concurrency:
-    group: release-main
+    group: release-pr
 
 jobs:
-    release:
+    prepare-release:
         runs-on: ubuntu-24.04
-        name: Release package
+        name: Prepare release pull request
         permissions:
-            contents: write # required to commit the changelog, push the package tag, and create the GitHub Release
-            id-token: write # required by npm trusted publishing to mint the OIDC token
+            contents: write # Required to push the generated changelog commit to the release branch.
+            pull-requests: write # Required to create, update, and close release pull requests.
+            issues: write # Required to apply the build label to the release pull request.
         env:
             GH_TOKEN: ${{ github.token }}
             GITHUB_TOKEN: ${{ github.token }}
+            RELEASE_BRANCH: release/wall-clock
+            RELEASE_PR_BODY: Updates CHANGELOG.md for the next @enormora/wall-clock release.
+            RELEASE_PR_TITLE: Prepare release
         steps:
             - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
               with:
@@ -39,47 +43,69 @@ jobs:
                   spec="@packtory/cli@${version}"
                   attestation=$(npm view "${spec}" --json | jq -r '.dist.attestations // empty')
                   if [ -z "${attestation}" ]; then
-                    echo "::error::${spec} is missing a provenance attestation; refusing to release"
+                    echo "::error::${spec} is missing a provenance attestation; refusing to prepare a release"
                     exit 1
                   fi
                   echo "Verified ${spec} has a registered provenance attestation."
-            - name: Validate Packtory release inputs
-              run: npx just packtory-dry-run
             - name: Configure Git author
               run: |
                   git config user.name 'github-actions[bot]'
                   git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            - name: Configure release push refs
+            - name: Prepare release changelog commit
+              id: prepare-release
               run: |
-                  git config remote.origin.push 'refs/heads/main:refs/heads/main'
-                  git config --add remote.origin.push 'refs/tags/*:refs/tags/*'
-            - name: Publish release
-              id: publish-release
-              continue-on-error: true
-              run: |
-                  set -o pipefail
-                  mkdir -p target/release
-                  npx just publish-release 2>&1 | tee target/release/publish.log
-            # The `sigstore` wrapper used by `libnpmpublish` hardcodes
-            # `fetchOnConflict: false`, so a retried Rekor POST after a
-            # transient blip surfaces as
-            # `error creating tlog entry - (409) an equivalent entry already exists`
-            # even though the original submission landed. Re-running publish
-            # mints a fresh OIDC cert, so the next signature differs and
-            # Rekor accepts it.
-            - name: Re-publish release after a transient sigstore failure
-              if: steps.publish-release.outcome == 'failure'
-              run: |
-                  if grep -Eiq 'OIDC token exchange failed with status 404' target/release/publish.log; then
-                    echo 'npm Trusted Publishing is not configured correctly for this workflow.'
-                    echo 'Expected npm Trusted Publishing workflow filename: release.yml'
-                    exit 1
-                  fi
+                  starting_commit=$(git rev-parse HEAD)
+                  npx just prepare-release
 
-                  if grep -Eiq 'attestation|oidc|provenance|rekor|sigstore|tlog' target/release/publish.log; then
-                    sleep 30
-                    npx just publish-release
+                  if [ "$(git rev-parse HEAD)" = "${starting_commit}" ]; then
+                    echo "created-release-commit=false" >> "${GITHUB_OUTPUT}"
                     exit 0
                   fi
 
-                  exit 1
+                  echo "created-release-commit=true" >> "${GITHUB_OUTPUT}"
+            - name: Close stale release pull request and delete release branch
+              if: steps.prepare-release.outputs.created-release-commit == 'false'
+              run: |
+                  release_pr_number=$(
+                    gh pr list \
+                      --head "${RELEASE_BRANCH}" \
+                      --base main \
+                      --state open \
+                      --json number \
+                      --jq '.[0].number // empty'
+                  )
+
+                  if [ -n "${release_pr_number}" ]; then
+                    gh pr close "${release_pr_number}" --comment 'No release changelog changes were generated.'
+                  fi
+
+                  git push origin --delete "${RELEASE_BRANCH}" || true
+            - name: Push release branch
+              if: steps.prepare-release.outputs.created-release-commit == 'true'
+              run: git push origin "HEAD:refs/heads/${RELEASE_BRANCH}" --force-with-lease
+            - name: Create or update release pull request
+              if: steps.prepare-release.outputs.created-release-commit == 'true'
+              run: |
+                  release_pr_number=$(
+                    gh pr list \
+                      --head "${RELEASE_BRANCH}" \
+                      --base main \
+                      --state open \
+                      --json number \
+                      --jq '.[0].number // empty'
+                  )
+
+                  if [ -n "${release_pr_number}" ]; then
+                    gh pr edit "${release_pr_number}" \
+                      --title "${RELEASE_PR_TITLE}" \
+                      --body "${RELEASE_PR_BODY}" \
+                      --add-label build
+                    exit 0
+                  fi
+
+                  gh pr create \
+                    --head "${RELEASE_BRANCH}" \
+                    --base main \
+                    --title "${RELEASE_PR_TITLE}" \
+                    --body "${RELEASE_PR_BODY}" \
+                    --label build

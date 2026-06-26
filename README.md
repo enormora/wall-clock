@@ -230,9 +230,6 @@ just packtory-dry-run
 
 ## Publishing
 
-The package is released through the manual GitHub Actions `Release` workflow. Packtory owns the release flow: it
-generates `CHANGELOG.md`, commits it to `main`, publishes to npm, pushes the package tag, and creates the GitHub Release.
-
 Pull requests that should appear in the changelog need exactly one changelog label. Supported labels:
 
 - `breaking`
@@ -244,7 +241,13 @@ Pull requests that should appear in the changelog need exactly one changelog lab
 - `refactor`
 - `build`
 
-To release, go to GitHub Actions -> Release -> Run workflow.
+The package is released through a release pull request:
+
+1. Go to GitHub Actions -> Release -> Run workflow.
+2. The workflow creates or updates a `Prepare release` pull request with the generated `CHANGELOG.md` changes.
+3. Review and merge the release pull request through the normal merge queue.
+4. After the release pull request is merged, the publish workflow publishes to npm, pushes the package tag, and creates
+   the GitHub Release.
 
 The dry-run command validates the package shape without publishing.
 
