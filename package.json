@@ -54,7 +54,7 @@
         "c8": "11.0.0",
         "eslint": "10.5.0",
         "mocha": "11.7.6",
-        "prettier": "3.8.3",
+        "prettier": "3.8.4",
         "rust-just": "1.54.0",
         "typescript": "6.0.3"
     },
