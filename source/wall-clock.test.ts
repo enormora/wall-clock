@@ -5,7 +5,7 @@ import { suite, test } from 'mocha';
 import { createWallClock } from './wall-clock.ts';
 
 suite('wall clock', () => {
-    test('real wall clock returns the current timestamp in milliseconds', () => {
+    test('real wall clock returns the current timestamp in milliseconds', function () {
         const lowerTimestampBound = Date.now();
         const wallClock = createWallClock();
 
@@ -17,7 +17,7 @@ suite('wall clock', () => {
         assert.strictEqual(actualCurrentTimestampInMilliseconds <= upperTimestampBound, true);
     });
 
-    test('real wall clock returns a new current date instance', async () => {
+    test('real wall clock returns a new current date instance', async function () {
         const wallClock = createWallClock();
 
         const firstCurrentDate = wallClock.currentDate;
@@ -43,7 +43,7 @@ suite('wall clock', () => {
         try {
             const wallClock = createWallClock();
 
-            const actualTimeoutIdentifier = wallClock.setTimeout(() => {
+            const actualTimeoutIdentifier = wallClock.setTimeout(function () {
                 return undefined;
             }, 1);
 
@@ -73,7 +73,7 @@ suite('wall clock', () => {
             wallClock.clearTimeout(timeoutIdentifier);
 
             assert.strictEqual(invocationContexts[0], globalThis);
-            assert.deepStrictEqual(actualTimeoutIdentifiers, [timeoutIdentifier]);
+            assert.deepStrictEqual(actualTimeoutIdentifiers, [ timeoutIdentifier ]);
         } finally {
             globalThis.clearTimeout = originalClearTimeout;
         }
@@ -94,7 +94,7 @@ suite('wall clock', () => {
         try {
             const wallClock = createWallClock();
 
-            const actualIntervalIdentifier = wallClock.setInterval(() => {
+            const actualIntervalIdentifier = wallClock.setInterval(function () {
                 return undefined;
             }, 1);
 
@@ -127,7 +127,7 @@ suite('wall clock', () => {
             wallClock.clearInterval(intervalIdentifier);
 
             assert.strictEqual(invocationContexts[0], globalThis);
-            assert.deepStrictEqual(actualIntervalIdentifiers, [intervalIdentifier]);
+            assert.deepStrictEqual(actualIntervalIdentifiers, [ intervalIdentifier ]);
         } finally {
             globalThis.clearInterval = originalClearInterval;
         }

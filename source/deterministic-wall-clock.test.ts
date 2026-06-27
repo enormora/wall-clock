@@ -14,15 +14,15 @@ function createCallRecorder() {
     };
 }
 
-suite('deterministic wall clock', () => {
-    test('starts at zero by default', () => {
+suite('deterministic wall clock', function () {
+    test('starts at zero by default', function () {
         const wallClock = createDeterministicWallClock();
 
         assert.strictEqual(wallClock.currentTimestampInMilliseconds, 0);
         assert.strictEqual(wallClock.currentDate.getTime(), 0);
     });
 
-    test('starts with the provided timestamp', () => {
+    test('starts with the provided timestamp', function () {
         const expectedCurrentTimestampInMilliseconds = 1_704_067_200_000;
         const wallClock = createDeterministicWallClock({
             initialCurrentTimestampInMilliseconds: expectedCurrentTimestampInMilliseconds
@@ -32,7 +32,7 @@ suite('deterministic wall clock', () => {
         assert.strictEqual(wallClock.currentDate.getTime(), expectedCurrentTimestampInMilliseconds);
     });
 
-    test('sets the current timestamp in milliseconds', () => {
+    test('sets the current timestamp in milliseconds', function () {
         const wallClock = createDeterministicWallClock();
         const expectedCurrentTimestampInMilliseconds = 1_800_000;
 
@@ -42,7 +42,7 @@ suite('deterministic wall clock', () => {
         assert.strictEqual(wallClock.currentDate.getTime(), expectedCurrentTimestampInMilliseconds);
     });
 
-    test('advances current timestamp by the provided delay', () => {
+    test('advances current timestamp by the provided delay', function () {
         const wallClock = createDeterministicWallClock({
             initialCurrentTimestampInMilliseconds: 10_000
         });
@@ -54,7 +54,7 @@ suite('deterministic wall clock', () => {
         assert.strictEqual(wallClock.currentDate.getTime(), 12_000);
     });
 
-    test('returns a new date instance for each call', () => {
+    test('returns a new date instance for each call', function () {
         const wallClock = createDeterministicWallClock({
             initialCurrentTimestampInMilliseconds: 100
         });
@@ -67,7 +67,7 @@ suite('deterministic wall clock', () => {
         assert.strictEqual(secondCurrentDate.getTime(), 100);
     });
 
-    test('executes timeout callback once when time reaches the delay', () => {
+    test('executes timeout callback once when time reaches the delay', function () {
         const wallClock = createDeterministicWallClock();
         const timeoutRecorder = createCallRecorder();
 
@@ -75,10 +75,10 @@ suite('deterministic wall clock', () => {
         wallClock.advanceByMilliseconds(100);
         wallClock.advanceByMilliseconds(500);
 
-        assert.deepStrictEqual(timeoutRecorder.calls, [['timeout argument']]);
+        assert.deepStrictEqual(timeoutRecorder.calls, [ [ 'timeout argument' ] ]);
     });
 
-    test('does not execute timeout callback before the delay', () => {
+    test('does not execute timeout callback before the delay', function () {
         const wallClock = createDeterministicWallClock();
         const timeoutRecorder = createCallRecorder();
 
@@ -88,7 +88,7 @@ suite('deterministic wall clock', () => {
         assert.deepStrictEqual(timeoutRecorder.calls, []);
     });
 
-    test('stops executing timeout callback after clearTimeout', () => {
+    test('stops executing timeout callback after clearTimeout', function () {
         const wallClock = createDeterministicWallClock();
         const timeoutRecorder = createCallRecorder();
 
@@ -99,36 +99,36 @@ suite('deterministic wall clock', () => {
         assert.deepStrictEqual(timeoutRecorder.calls, []);
     });
 
-    test('executes due timeout callbacks in timestamp and registration order', () => {
+    test('executes due timeout callbacks in timestamp and registration order', function () {
         const wallClock = createDeterministicWallClock();
         const executionOrder: string[] = [];
 
-        wallClock.setTimeout(() => {
+        wallClock.setTimeout(function () {
             executionOrder.push('second timeout');
         }, 100);
-        wallClock.setTimeout(() => {
+        wallClock.setTimeout(function () {
             executionOrder.push('first timeout');
         }, 50);
-        wallClock.setTimeout(() => {
+        wallClock.setTimeout(function () {
             executionOrder.push('third timeout');
         }, 100);
 
         wallClock.advanceByMilliseconds(100);
 
-        assert.deepStrictEqual(executionOrder, ['first timeout', 'second timeout', 'third timeout']);
+        assert.deepStrictEqual(executionOrder, [ 'first timeout', 'second timeout', 'third timeout' ]);
     });
 
-    test('executes interval callbacks repeatedly when time advances', () => {
+    test('executes interval callbacks repeatedly when time advances', function () {
         const wallClock = createDeterministicWallClock();
         const intervalRecorder = createCallRecorder();
 
         wallClock.setInterval(intervalRecorder.record, 100, 'interval argument');
         wallClock.advanceByMilliseconds(250);
 
-        assert.deepStrictEqual(intervalRecorder.calls, [['interval argument'], ['interval argument']]);
+        assert.deepStrictEqual(intervalRecorder.calls, [ [ 'interval argument' ], [ 'interval argument' ] ]);
     });
 
-    test('stops executing interval callbacks after clearInterval', () => {
+    test('stops executing interval callbacks after clearInterval', function () {
         const wallClock = createDeterministicWallClock();
         const intervalRecorder = createCallRecorder();
 
@@ -137,36 +137,36 @@ suite('deterministic wall clock', () => {
         wallClock.clearInterval(intervalIdentifier);
         wallClock.advanceByMilliseconds(300);
 
-        assert.deepStrictEqual(intervalRecorder.calls, [[]]);
+        assert.deepStrictEqual(intervalRecorder.calls, [ [] ]);
     });
 
-    test('rejects invalid timeout delays', () => {
+    test('rejects invalid timeout delays', function () {
         const wallClock = createDeterministicWallClock();
 
-        assert.throws(() => {
-            wallClock.setTimeout(() => {
+        assert.throws(function () {
+            wallClock.setTimeout(function () {
                 return undefined;
             }, -1);
         }, RangeError);
-        assert.throws(() => {
-            wallClock.setTimeout(() => {
+        assert.throws(function () {
+            wallClock.setTimeout(function () {
                 return undefined;
-            }, Number.NaN);
+            }, NaN);
         }, TypeError);
     });
 
-    test('rejects invalid interval delays', () => {
+    test('rejects invalid interval delays', function () {
         const wallClock = createDeterministicWallClock();
 
-        assert.throws(() => {
-            wallClock.setInterval(() => {
+        assert.throws(function () {
+            wallClock.setInterval(function () {
                 return undefined;
             }, 0);
         }, RangeError);
-        assert.throws(() => {
-            wallClock.setInterval(() => {
+        assert.throws(function () {
+            wallClock.setInterval(function () {
                 return undefined;
-            }, Number.POSITIVE_INFINITY);
+            }, Infinity);
         }, TypeError);
     });
 });
