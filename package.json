@@ -10,13 +10,13 @@
             "types": "./target/build/source/index.d.ts",
             "import": "./target/build/source/index.js"
         },
-        "./wall-clock": {
-            "types": "./target/build/source/wall-clock.d.ts",
-            "import": "./target/build/source/wall-clock.js"
-        },
         "./deterministic-wall-clock": {
             "types": "./target/build/source/deterministic-wall-clock.d.ts",
             "import": "./target/build/source/deterministic-wall-clock.js"
+        },
+        "./wall-clock": {
+            "types": "./target/build/source/wall-clock.d.ts",
+            "import": "./target/build/source/wall-clock.js"
         }
     },
     "files": [
@@ -25,7 +25,6 @@
         "!target/build/source/**/*.d.ts.map",
         "!target/build/source/**/*.map"
     ],
-    "scripts": {},
     "keywords": [
         "clock",
         "deterministic",

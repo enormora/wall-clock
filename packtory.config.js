@@ -63,7 +63,7 @@ export function resolveRegistrySettingsForEnvironment(environmentVariables) {
 export function resolvePublishSettingsForEnvironment(environmentVariables) {
     return {
         access: 'public',
-        ...(environmentVariables.GITHUB_ACTIONS === 'true' ? { provenance: { type: 'auto' } } : {})
+        ...environmentVariables.GITHUB_ACTIONS === 'true' && { provenance: { type: 'auto' } }
     };
 }
 
@@ -77,10 +77,10 @@ export async function buildConfig() {
     const publishSettings = resolvePublishSettingsForEnvironment(environmentVariables);
 
     return {
-        ...(registrySettings === undefined ? {} : { registrySettings }),
+        ...registrySettings !== undefined && { registrySettings },
         changelog: {
             packageTagFormat: '{packageName}@{version}',
-            outputs: [{ kind: 'repository-file', path: 'CHANGELOG.md' }, { kind: 'github-release' }]
+            outputs: [ { kind: 'repository-file', path: 'CHANGELOG.md' }, { kind: 'github-release' } ]
         },
         commonPackageSettings: {
             sourcesFolder,

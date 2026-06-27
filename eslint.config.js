@@ -3,16 +3,14 @@ import { nodeConfig } from '@enormora/eslint-config-node';
 import { mochaConfig } from '@enormora/eslint-config-mocha';
 import { typescriptConfig } from '@enormora/eslint-config-typescript';
 
-// cspell:ignore sonarjs
-
 export default [
     {
-        ignores: ['coverage/**', 'target/**', 'mocha.config.json']
+        ignores: [ 'coverage/**', 'target/**', 'mocha.config.json' ]
     },
+    ...baseConfig,
     {
-        ...baseConfig,
+        files: [ '**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,vue}' ],
         rules: {
-            ...baseConfig.rules,
             'import/no-unused-modules': [
                 'error',
                 {
@@ -22,10 +20,13 @@ export default [
             ]
         }
     },
-    nodeConfig,
+    {
+        ...nodeConfig,
+        files: [ '**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,vue}' ]
+    },
     {
         ...typescriptConfig,
-        files: ['**/*.ts'],
+        files: [ '**/*.ts' ],
         rules: {
             ...typescriptConfig.rules,
             'import/extensions': [
@@ -39,7 +40,7 @@ export default [
     },
     {
         ...mochaConfig,
-        files: ['**/*.test.ts'],
+        files: [ '**/*.test.ts' ],
         rules: {
             ...mochaConfig.rules,
             'sonarjs/no-empty-group': 'off',
@@ -48,43 +49,72 @@ export default [
             'mocha/no-mocha-arrows': 'off',
             '@typescript-eslint/explicit-function-return-type': 'off',
             '@typescript-eslint/no-magic-numbers': 'off',
+            'enormora-typescript/no-this-expressions': 'off',
             'functional/no-this-expressions': 'off',
             'functional/prefer-immutable-types': 'off',
             'max-statements': 'off',
             'no-magic-numbers': 'off',
-            'node/prefer-global/timers': 'off'
+            'node/prefer-global/timers': 'off',
+            'unicorn/no-this-outside-of-class': 'off'
         }
     },
     {
-        files: ['source/wall-clock.ts'],
+        files: [ 'source/wall-clock.ts' ],
         rules: {
             'node/prefer-global/timers': 'off'
         }
     },
     {
-        files: ['source/index.ts'],
+        files: [ 'source/index.ts' ],
         rules: {
             'no-barrel-files/no-barrel-files': 'off'
         }
     },
     {
+        files: [ '**/*.md' ],
+        rules: {
+            'dprint-markdown/markdown': 'off'
+        }
+    },
+    {
+        files: [ '**/*.{yml,yaml}' ],
+        rules: {
+            'dprint/yaml': 'off'
+        }
+    },
+    {
+        files: [ 'package.json' ],
+        rules: {
+            'package-json/valid-repository': 'off'
+        }
+    },
+    {
+        files: [ '**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,vue}' ],
         rules: {
             '@typescript-eslint/method-signature-style': 'off',
             '@typescript-eslint/no-unsafe-type-assertion': 'off',
             '@stylistic/operator-linebreak': 'off',
             'import/no-named-as-default': 'off',
             'import/no-named-as-default-member': 'off',
-            'max-lines-per-function': ['error', { max: 50, skipBlankLines: true, skipComments: true }]
+            'max-lines-per-function': [ 'error', { max: 50, skipBlankLines: true, skipComments: true } ]
         }
     },
     {
-        files: ['eslint.config.js', 'mocha.config.json', 'prettier.config.js'],
+        files: [ 'source/wall-clock.ts', 'source/wall-clock.test.ts' ],
         rules: {
+            'unicorn/no-global-object-property-assignment': 'off',
+            'unicorn/no-unnecessary-global-this': 'off'
+        }
+    },
+    {
+        files: [ 'eslint.config.js', 'mocha.config.json', 'prettier.config.js' ],
+        rules: {
+            '@cspell/spellchecker': 'off',
             'import/no-default-export': 'off'
         }
     },
     {
-        files: ['**/*.test.ts'],
+        files: [ '**/*.test.ts' ],
         rules: {
             'max-lines-per-function': 'off'
         }

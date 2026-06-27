@@ -40,28 +40,25 @@ function createTimeoutController(currentTimestampInMilliseconds: CurrentTimestam
     const timeoutRegistrations = new Map<number, TimeoutRegistration>();
 
     function runDueTimeoutRegistrations(): void {
-        const dueTimeoutEntries = Array.from(timeoutRegistrations.entries())
-            .filter(([, timeoutRegistration]) => {
+        const dueTimeoutEntries = Array
+            .from(timeoutRegistrations)
+            .filter(function ([ , timeoutRegistration ]) {
                 return timeoutRegistration.executionTimestampInMilliseconds <= currentTimestampInMilliseconds();
             })
-            .toSorted((firstTimeoutEntry, secondTimeoutEntry) => {
-                const [firstTimeoutIdentifier, firstTimeoutRegistration] = firstTimeoutEntry;
-                const [secondTimeoutIdentifier, secondTimeoutRegistration] = secondTimeoutEntry;
+            .toSorted(function (firstTimeoutEntry, secondTimeoutEntry) {
+                const [ firstTimeoutIdentifier, firstTimeoutRegistration ] = firstTimeoutEntry;
+                const [ secondTimeoutIdentifier, secondTimeoutRegistration ] = secondTimeoutEntry;
+                const timeoutExecutionTimestampDifference = firstTimeoutRegistration.executionTimestampInMilliseconds -
+                    secondTimeoutRegistration.executionTimestampInMilliseconds;
 
-                if (
-                    firstTimeoutRegistration.executionTimestampInMilliseconds !==
-                    secondTimeoutRegistration.executionTimestampInMilliseconds
-                ) {
-                    return (
-                        firstTimeoutRegistration.executionTimestampInMilliseconds -
-                        secondTimeoutRegistration.executionTimestampInMilliseconds
-                    );
+                if (timeoutExecutionTimestampDifference !== 0) {
+                    return timeoutExecutionTimestampDifference;
                 }
 
                 return firstTimeoutIdentifier - secondTimeoutIdentifier;
             });
 
-        dueTimeoutEntries.forEach(([timeoutIdentifier, timeoutRegistration]) => {
+        dueTimeoutEntries.forEach(function ([ timeoutIdentifier, timeoutRegistration ]) {
             timeoutRegistrations.delete(timeoutIdentifier);
             timeoutRegistration.execute();
         });
@@ -77,7 +74,7 @@ function createTimeoutController(currentTimestampInMilliseconds: CurrentTimestam
             nextTimeoutIdentifier += 1;
 
             timeoutRegistrations.set(timeoutIdentifier, {
-                execute: () => {
+                execute() {
                     handler(...handlerArguments);
                 },
                 executionTimestampInMilliseconds: currentTimestampInMilliseconds() + delayInMilliseconds
@@ -97,7 +94,7 @@ function createIntervalController(currentTimestampInMilliseconds: CurrentTimesta
     const intervalRegistrations = new Map<number, IntervalRegistration>();
 
     function runDueIntervalRegistrations(): void {
-        intervalRegistrations.forEach((intervalRegistration, intervalIdentifier) => {
+        intervalRegistrations.forEach(function (intervalRegistration, intervalIdentifier) {
             const { delayInMilliseconds, execute } = intervalRegistration;
             let { nextExecutionTimestampInMilliseconds } = intervalRegistration;
 
@@ -129,7 +126,7 @@ function createIntervalController(currentTimestampInMilliseconds: CurrentTimesta
 
             intervalRegistrations.set(intervalIdentifier, {
                 delayInMilliseconds,
-                execute: () => {
+                execute() {
                     handler(...handlerArguments);
                 },
                 nextExecutionTimestampInMilliseconds: currentTimestampInMilliseconds() + delayInMilliseconds

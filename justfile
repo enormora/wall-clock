@@ -25,8 +25,10 @@ lint-fix: eslint-fix prettier-fix
 test-unit:
     mocha --config mocha.config.json
 
-test:
+test-unit-coverage:
     c8 just test-unit
+
+test: lint test-unit-coverage packtory-dry-run
 
 packtory-dry-run: compile
     packtory publish

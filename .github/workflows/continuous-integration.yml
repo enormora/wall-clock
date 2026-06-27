@@ -37,12 +37,8 @@ jobs:
                   node-version: ${{ matrix.node-version }}
             - name: Install dependencies
               run: npm clean-install
-            - name: Static code analysis
-              run: npx just lint
             - name: Run tests
               run: npx just test
-            - name: Packtory dry-run
-              run: npx just packtory-dry-run
 
     workflow-security:
         runs-on: ubuntu-24.04
