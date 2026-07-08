@@ -9,15 +9,15 @@ import {
 
 suite('timer delay validation', function () {
     test('accepts finite delays', function () {
-        assert.doesNotThrow(function () {
-            validateFiniteDelayInMilliseconds(0);
-        });
-        assert.doesNotThrow(function () {
-            validateFiniteDelayInMilliseconds(100);
-        });
-        assert.doesNotThrow(function () {
-            validateFiniteDelayInMilliseconds(-100);
-        });
+        let acceptedDelayCount = 0;
+        validateFiniteDelayInMilliseconds(0);
+        acceptedDelayCount += 1;
+        validateFiniteDelayInMilliseconds(100);
+        acceptedDelayCount += 1;
+        validateFiniteDelayInMilliseconds(-100);
+        acceptedDelayCount += 1;
+
+        assert.strictEqual(acceptedDelayCount, 3);
     });
 
     test('rejects non-finite delays', function () {
@@ -33,12 +33,13 @@ suite('timer delay validation', function () {
     });
 
     test('accepts zero and positive timeout delays', function () {
-        assert.doesNotThrow(function () {
-            validateTimeoutDelayInMilliseconds(0);
-        });
-        assert.doesNotThrow(function () {
-            validateTimeoutDelayInMilliseconds(100);
-        });
+        let acceptedDelayCount = 0;
+        validateTimeoutDelayInMilliseconds(0);
+        acceptedDelayCount += 1;
+        validateTimeoutDelayInMilliseconds(100);
+        acceptedDelayCount += 1;
+
+        assert.strictEqual(acceptedDelayCount, 2);
     });
 
     test('rejects negative timeout delays', function () {
@@ -54,12 +55,13 @@ suite('timer delay validation', function () {
     });
 
     test('accepts positive interval delays', function () {
-        assert.doesNotThrow(function () {
-            validateIntervalDelayInMilliseconds(1);
-        });
-        assert.doesNotThrow(function () {
-            validateIntervalDelayInMilliseconds(100);
-        });
+        let acceptedDelayCount = 0;
+        validateIntervalDelayInMilliseconds(1);
+        acceptedDelayCount += 1;
+        validateIntervalDelayInMilliseconds(100);
+        acceptedDelayCount += 1;
+
+        assert.strictEqual(acceptedDelayCount, 2);
     });
 
     test('rejects zero and negative interval delays', function () {

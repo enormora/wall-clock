@@ -1,6 +1,6 @@
 import { baseConfig } from '@enormora/eslint-config-base';
+import { mochaNodeAssertConfig } from '@enormora/eslint-config-mocha-node-assert';
 import { nodeConfig } from '@enormora/eslint-config-node';
-import { mochaConfig } from '@enormora/eslint-config-mocha';
 import { typescriptConfig } from '@enormora/eslint-config-typescript';
 
 export default [
@@ -39,10 +39,10 @@ export default [
         }
     },
     {
-        ...mochaConfig,
+        ...mochaNodeAssertConfig,
         files: [ '**/*.test.ts' ],
         rules: {
-            ...mochaConfig.rules,
+            ...mochaNodeAssertConfig.rules,
             'sonarjs/no-empty-group': 'off',
             complexity: 'off',
             'mocha/no-global-tests': 'off',
