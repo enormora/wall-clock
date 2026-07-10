@@ -7,7 +7,7 @@ compile:
     tsc --build
 
 eslint *OPTIONS:
-    eslint . --max-warnings 0 {{OPTIONS}}
+    eslint . --cache --cache-location "./target/eslintcache" --cache-strategy content --max-warnings 0 {{OPTIONS}}
 
 eslint-fix: (eslint '--fix')
 
