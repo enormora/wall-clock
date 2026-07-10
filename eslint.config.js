@@ -5,7 +5,7 @@ import { typescriptConfig } from '@enormora/eslint-config-typescript';
 
 export default [
     {
-        ignores: [ 'coverage/**', 'target/**', 'mocha.config.json' ]
+        ignores: [ '**/CHANGELOG.md', 'coverage/**', 'target/**', 'mocha.config.json' ]
     },
     ...baseConfig,
     {
