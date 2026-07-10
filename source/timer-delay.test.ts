@@ -22,13 +22,13 @@ suite('timer delay validation', function () {
 
     test('rejects non-finite delays', function () {
         assert.throws(function () {
-            validateFiniteDelayInMilliseconds(NaN);
+            validateFiniteDelayInMilliseconds(Number.NaN);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
         assert.throws(function () {
-            validateFiniteDelayInMilliseconds(Infinity);
+            validateFiniteDelayInMilliseconds(Number.POSITIVE_INFINITY);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
         assert.throws(function () {
-            validateFiniteDelayInMilliseconds(-Infinity);
+            validateFiniteDelayInMilliseconds(Number.NEGATIVE_INFINITY);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
     });
 
@@ -50,7 +50,7 @@ suite('timer delay validation', function () {
 
     test('rejects non-finite timeout delays', function () {
         assert.throws(function () {
-            validateTimeoutDelayInMilliseconds(NaN);
+            validateTimeoutDelayInMilliseconds(Number.NaN);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
     });
 
@@ -75,7 +75,7 @@ suite('timer delay validation', function () {
 
     test('rejects non-finite interval delays', function () {
         assert.throws(function () {
-            validateIntervalDelayInMilliseconds(Infinity);
+            validateIntervalDelayInMilliseconds(Number.POSITIVE_INFINITY);
         }, /^TypeError: Invalid delay, must be a finite number$/u);
     });
 });
