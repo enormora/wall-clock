@@ -151,7 +151,7 @@ suite('deterministic wall clock', function () {
         assert.throws(function () {
             wallClock.setTimeout(function () {
                 return undefined;
-            }, NaN);
+            }, Number.NaN);
         }, TypeError);
     });
 
@@ -166,7 +166,7 @@ suite('deterministic wall clock', function () {
         assert.throws(function () {
             wallClock.setInterval(function () {
                 return undefined;
-            }, Infinity);
+            }, Number.POSITIVE_INFINITY);
         }, TypeError);
     });
 });
