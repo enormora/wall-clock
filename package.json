@@ -53,7 +53,7 @@
         "eslint": "10.7.0",
         "mocha": "11.7.6",
         "prettier": "3.9.5",
-        "rust-just": "1.55.1",
+        "rust-just": "1.56.0",
         "typescript": "6.0.3"
     },
     "engines": {
