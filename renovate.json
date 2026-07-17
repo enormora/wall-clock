@@ -1,7 +1,13 @@
 {
-    "extends": ["config:base", "helpers:pinGitHubActionDigests"],
+    "extends": [
+        "config:base",
+        "helpers:pinGitHubActionDigests"
+    ],
     "commitMessagePrefix": "⬆️ ",
-    "labels": ["renovate", "upgrade"],
+    "labels": [
+        "renovate",
+        "upgrade"
+    ],
     "dependencyDashboard": false,
     "rebaseStalePrs": true,
     "lockFileMaintenance": {
@@ -12,14 +18,20 @@
     "automergeType": "pr",
     "packageRules": [
         {
-            "matchPackagePatterns": ["^@enormora/eslint-config"],
+            "matchPackagePatterns": [
+                "^@enormora/eslint-config"
+            ],
             "groupName": "@enormora/eslint-config",
             "groupSlug": "enormora-eslint-config"
         },
         {
-            "matchPackagePatterns": ["^@packtory/"],
+            "matchPackagePatterns": [
+                "^@packtory/"
+            ],
             "groupName": "@packtory dependencies",
             "groupSlug": "packtory"
         }
-    ]
+    ],
+    "platformAutomerge": true,
+    "automergeStrategy": "merge-commit"
 }
