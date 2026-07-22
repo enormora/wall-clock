@@ -113,7 +113,7 @@ wallClock.advanceByMilliseconds(99);
 assert.deepStrictEqual(calls, []);
 
 wallClock.advanceByMilliseconds(1);
-assert.deepStrictEqual(calls, ['done']);
+assert.deepStrictEqual(calls, [ 'done' ]);
 ```
 
 Intervals run once for each elapsed interval.

@@ -71,18 +71,6 @@ export default [
         }
     },
     {
-        files: [ '**/*.md' ],
-        rules: {
-            'dprint-markdown/markdown': 'off'
-        }
-    },
-    {
-        files: [ '**/*.{yml,yaml}' ],
-        rules: {
-            'dprint/yaml': 'off'
-        }
-    },
-    {
         files: [ 'package.json' ],
         rules: {
             'package-json/valid-repository': 'off'
@@ -107,7 +95,7 @@ export default [
         }
     },
     {
-        files: [ 'eslint.config.js', 'mocha.config.json', 'prettier.config.js' ],
+        files: [ 'eslint.config.js', 'mocha.config.json' ],
         rules: {
             '@cspell/spellchecker': 'off',
             'import/no-default-export': 'off'
