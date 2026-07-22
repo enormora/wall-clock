@@ -1,37 +1,4 @@
 {
-    "extends": [
-        "config:base",
-        "helpers:pinGitHubActionDigests"
-    ],
-    "commitMessagePrefix": "⬆️ ",
-    "labels": [
-        "renovate",
-        "upgrade"
-    ],
-    "dependencyDashboard": false,
-    "rebaseStalePrs": true,
-    "lockFileMaintenance": {
-        "enabled": true,
-        "automerge": true
-    },
-    "automerge": true,
-    "automergeType": "pr",
-    "packageRules": [
-        {
-            "matchPackagePatterns": [
-                "^@enormora/eslint-config"
-            ],
-            "groupName": "@enormora/eslint-config",
-            "groupSlug": "enormora-eslint-config"
-        },
-        {
-            "matchPackagePatterns": [
-                "^@packtory/"
-            ],
-            "groupName": "@packtory dependencies",
-            "groupSlug": "packtory"
-        }
-    ],
-    "platformAutomerge": true,
-    "automergeStrategy": "merge-commit"
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["github>enormora/renovate-config#1.0.0", "github>enormora/renovate-config:github-automerge#1.0.0"]
 }
