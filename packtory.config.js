@@ -90,7 +90,8 @@ export async function buildConfig() {
             additionalPackageJsonAttributes: {
                 author: packageJson.author,
                 license: packageJson.license,
-                repository: packageJson.repository
+                repository: packageJson.repository,
+                engines: packageJson.engines
             },
             additionalFiles: [
                 {
