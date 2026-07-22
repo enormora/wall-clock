@@ -52,7 +52,7 @@
         "c8": "11.0.0",
         "eslint": "10.7.0",
         "mocha": "11.7.6",
-        "rust-just": "1.56.0",
+        "rust-just": "1.57.0",
         "typescript": "6.0.3"
     },
     "engines": {
