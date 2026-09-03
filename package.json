@@ -42,15 +42,15 @@
         "url": "git+ssh://git@github.com/enormora/wall-clock.git"
     },
     "devDependencies": {
-        "@enormora/eslint-config-base": "0.0.61",
-        "@enormora/eslint-config-mocha-node-assert": "0.0.16",
+        "@enormora/eslint-config-base": "0.0.63",
+        "@enormora/eslint-config-mocha-node-assert": "0.0.18",
         "@enormora/eslint-config-node": "0.0.46",
-        "@enormora/eslint-config-typescript": "0.0.69",
+        "@enormora/eslint-config-typescript": "0.0.71",
         "@packtory/cli": "0.0.102",
         "@types/mocha": "10.0.10",
         "@types/node": "24.13.3",
         "c8": "12.0.0",
-        "eslint": "10.9.0",
+        "eslint": "10.9.1",
         "mocha": "12.0.0",
         "rust-just": "1.57.0",
         "typescript": "6.0.3"
